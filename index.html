@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta charset=UTF-8>
+        <meta name=viewport content="width=device-width, initial-scale=1.0">
+        <link rel=icon href=assets/icon.ico>
+        <title>BMI Calculator C</title>
+
+        <script type=module src=script/main.js defer></script>
+        <link rel=stylesheet href=style.css>
+    </head>
+    <body>
+        <div class=main>
+            <div class="bmi calc">
+                <div class=title>
+                    <span class=name>
+                        <span>BMI</span>
+                        <span>Calculator</span>
+                    </span>
+                    <div class=setting>
+                        <button class=metric>METRIC</button>
+                        <button class=switch></button>
+                        <button class=imperial>IMPERIAL</button>
+                    </div>
+                </div>
+                <div class=divide>
+                    <span>YOUR</span>
+                </div>
+                <div class=num id=height
+                    name=HEIGHT units=cm/ft,in
+                    min=120/4,0 max=210/6,11
+                    base=/12 convert=/2.54
+                ></div>
+                <span>&</span>
+                <div class=num id=weight
+                    name=WEIGHT units=kg/lbs
+                    min=30/66 max=150/330
+                    convert=/0.45359237
+                ></div>
+                <div class=divide>
+                    <span>GIVES</span>
+                </div>
+                <div class=num id=bmi
+                    name=BMI min=10 max=40 step=0.1
+                ></div>
+                <div class=tip>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class=options>
+            <div class=content>
+                <button class=primary></button>
+                <div class="primary-color colors menu left">
+                    <div class=content>
+                        <button class=random></button>
+                        <input type=range min=0 max=100 value=0 />
+                    </div>
+                </div>
+                <div class="secondary-color colors menu right">
+                    <div class=content>
+                        <input type=range min=0 max=100 value=0 />
+                        <div class="flip x">
+                            <button class=random></button>
+                        </div>
+                    </div>
+                </div>
+                <button class=secondary></button>
+
+                <button class=scheme></button>
+                <div class="schemes menu left">
+                    <div class=content>
+                        <button class=swap></button>
+                        <button class=select></button>
+                        <button class=sub></button>
+                        <button class=range></button>
+                        <button class=add></button>
+                        <div class="flip x">
+                            <button class=num-switch></button>
+                        </div>
+                        <button class=name></button>
+                        <div class="flip x y">
+                            <button class=header></button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class=mode></button>
+                <div class=margin></div>
+                <button class=heart></button>
+                <div class=margin></div>
+                <button class=save></button>
+                <button class=load></button>
+                <div class=empty></div>
+                <button class=input></button>
+            </div>
+        </div>
+
+        <div class=num>
+            <div class=top>
+                <div class=content>
+                    <input type=text inputmode=numeric placeholder=" " />
+                    <div class=units>
+                        <div class=unit>
+                            <div></div>
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class=header>
+                        <span></span>
+                        <div class=line></div>
+                    </div>
+                    <select>
+                        <option></option>
+                    </select>
+                </div>
+                <div class=border></div>
+            </div>
+            <div class="switch flip x">
+                <button></button>
+            </div>
+            <div class=bot>
+                <button class=sub></button>
+                <div class=range>
+                    <input type=range min=0 max=100 value=0 />
+                </div>
+                <button class=add></button>
+            </div>
+        </div>
+    </body>
+</html>

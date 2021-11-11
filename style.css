@@ -1,0 +1,982 @@
+:root {
+    --scale: 0.95;
+    --transition: 0.2s;
+}
+
+html, html.dark {
+    --back: #202124;
+    --line: #3C4043;
+    --mid: #6E767D;
+    --front: #BDC1C6;
+    --muted: grayscale(75%);
+    --hover: brightness(75%);
+    --saturation: 60%;
+    --lightness: 50%;
+}
+
+html.light {
+    --back: #FFFFFF;
+    --line: #DFE1E5;
+    --mid: #A6A8AB;
+    --front: #4D5156;
+    --muted: grayscale(75%);
+    --hover: brightness(125%);
+    --saturation: 80%;
+    --lightness: 50%;
+}
+
+html {
+    --primary: unset;
+    --secondary: unset;
+}
+
+body {
+    --header-text: unset;
+    --title-name: var(--header-text);
+    --title-text: var(--mid);
+
+    --active-option: var(--header-text);
+    --inactive-option: var(--mid);
+    --setting-switch: var(--mid);
+
+    --divide-text: var(--mid);
+    --divide-border: var(--line);
+
+    --num-name: unset;
+    --num-border: var(--primary);
+    --num-text: var(--front);
+    --num-unit: var(--mid);
+
+    --num-sub: unset;
+    --num-add: unset;
+    --num-switch: unset;
+    --num-select: unset;
+
+    --range-pos: unset;
+    --range-start: var(--primary);
+    --range-end: var(--line);
+}
+
+html {
+    font-size: 16px;
+    background-color: var(--back);
+}
+
+@media (min-width: 320px) {
+    html {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 380px) {
+    html {
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 32px;
+    }
+}
+
+html:not(.light, .dark) body {
+    display: none;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    scrollbar-width: none;
+    outline: none;
+    border: none;
+    z-index: inherit;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/**/
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+html, body, .main {
+    height: 100%;
+}
+
+.main {
+    padding: 1rem;
+    padding-top: 0;
+    overflow-y: auto;
+}
+
+.options {
+    flex-shrink: 0;
+    overflow-x: hidden;
+    border-top: 2px solid var(--line);
+}
+
+.main, .options > .content {
+    width: 100%;
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.options > .content {
+    height: 2rem;
+    padding: 0 0.5rem;
+
+    display: flex;
+    align-items: center;
+}
+
+.options > .content div {
+    display: flex;
+}
+
+.options .margin {
+    flex-grow: 1;
+}
+
+.options .empty {
+    width: 1.5rem;
+}
+
+.options :is(button + button, .empty, .margin) {
+    margin-left: 0.5rem;
+}
+
+.options button {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+
+    background-color: var(--front);
+    --mask-position: center;
+    --mask-size: contain;
+}
+
+.flip.x {
+    transform: scaleX(-1);
+}
+
+.flip.y {
+    transform: scaleY(-1);
+}
+
+.flip.x.y {
+    transform: scale(-1, -1);
+}
+
+
+
+/**/
+
+
+
+.options .menu {
+    width: 0;
+    margin: 0 0.25rem;
+    height: calc(100% - 0.5rem);
+    position: relative;
+    flex-shrink: 0;
+
+    border-radius: 0.5rem;
+    border: 0 solid transparent;
+    background-color: var(--line);
+    transition: var(--transition);
+}
+
+.options .menu.open {
+    margin: 0 0.5rem;
+}
+
+.options .menu.open.left {
+    border-left: 0.25rem solid var(--mid);
+    transition-property: width, margin, border-left;
+}
+
+.options .menu.open.right {
+    border-right: 0.25rem solid var(--mid);
+    transition-property: width, margin, border-right;
+}
+
+.options .menu::before, .options .menu::after {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+
+    border: 0.5rem solid transparent;
+    border-right-width: 0;
+    border-left-width: 0;
+    transition: var(--transition);
+}
+
+.options .menu::before {
+    left: 0;
+    border-left-width: 0;
+    transition-property: left, border-right;
+}
+
+.options .menu::after {
+    right: 0;
+    border-right-width: 0;
+    transition-property: right, border-left;
+}
+
+.options .menu.open.left::before {
+    left: -0.625rem;
+    border-right-width: 0.5rem;
+    border-right-color: var(--mid);
+}
+
+.options .menu.open.right::after {
+    right: -0.625rem;
+    border-left-width: 0.5rem;
+    border-left-color: var(--mid);
+}
+
+.options .menu .content {
+    width: calc(100% - 0.5rem);
+    height: calc(100% - 0.5rem);
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.options .menu:not(.open) .content {
+    visibility: hidden;
+    transition: visibility 0s ease var(--transition);
+}
+
+.options .colors.open {
+    width: min(calc(100% - 1.5rem * 2), 15rem);
+}
+
+.options .schemes.open {
+    width: calc(0.75rem + 1.25rem * 8 - 0.25rem);
+}
+
+
+
+/**/
+
+
+
+.options :is(.primary, .secondary) {
+    border-radius: 50%;
+    border: 2px solid var(--front);
+}
+
+.options .primary {
+    background-color: var(--primary);
+}
+
+.options .secondary {
+    background-color: var(--secondary);
+}
+
+.options .scheme {
+    --mask-image: url(assets/scheme.svg);
+}
+
+.dark .options .mode {
+    --mask-image: url(assets/dark.svg);
+}
+
+.light .options .mode {
+    --mask-image: url(assets/light.svg);
+}
+
+.options .heart {
+    --mask-image: url(assets/heart.svg);
+}
+
+.options .hearted {
+    --deg: 0deg;
+    --mask-image: url(assets/hearted.svg);
+    background: linear-gradient(var(--deg), var(--primary) 25%, var(--secondary) 75%);
+}
+
+.options .save {
+    --mask-image: url(assets/save.svg);
+}
+
+.options .saved {
+    --mask-image: url(assets/saved.svg);
+}
+
+.options .load {
+    --mask-image: url(assets/load.svg);
+}
+
+.options .input {
+    --mask-image: url(assets/input.svg);
+}
+
+
+
+/**/
+
+
+
+.options .menu.primary-color {
+    margin-right: 0;
+}
+
+.options .menu.secondary-color {
+    margin-left: 0;
+}
+
+.options .menu.primary-color.open {
+    margin-right: 0.25rem;
+}
+
+.options .menu.secondary-color.open {
+    margin-left: 0.25rem;
+}
+
+.options .colors .random {
+    margin-right: 0.25rem;
+    --mask-image: url(assets/random.svg);
+}
+
+.options .colors input[type=range] {
+    width: 100%;
+    height: 0.5rem;
+
+    border-radius: 0.25rem;
+}
+
+@supports not (-moz-appearance: none) {
+    .options .colors input[type=range] {
+        -webkit-appearance: none;
+    }
+
+    .options .colors input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+    }
+
+    .options .primary-color input[type=range]::-webkit-slider-thumb {
+        background-color: var(--primary);
+    }
+
+    .options .secondary-color input[type=range]::-webkit-slider-thumb {
+        background-color: var(--secondary);
+    }
+}
+
+@supports (-moz-appearance: none) {
+    .options .colors input[type=range]::-moz-range-thumb {
+        width: 1rem;
+        height: 1rem;
+
+        border-radius: 50%;
+        border: none;
+    }
+
+    .options .primary-color input[type=range]::-moz-range-thumb {
+        background-color: var(--primary);
+    }
+
+    .options .secondary-color input[type=range]::-moz-range-thumb {
+        background-color: var(--secondary);
+    }
+}
+
+
+
+/**/
+
+
+
+.options .schemes button {
+    margin-left: 0.25rem;
+}
+
+.options .schemes .flip button {
+    margin-right: 0.25rem;
+    margin-left: 0;
+}
+
+.options .schemes .swap {
+    margin-left: 0;
+    margin-right: 0.25rem;
+    --mask-image: url(assets/swap.svg);
+}
+
+.options .schemes .select {
+    --mask-size: 100%;
+    --mask-image: url(assets/down.svg);
+    background-color: var(--num-select);
+}
+
+.options .schemes .sub {
+    --mask-image: url(assets/sub.svg);
+    background-color: var(--num-sub);
+}
+
+.options .schemes .range {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: var(--range-pos);
+}
+
+.options .schemes .add {
+    --mask-image: url(assets/add.svg);
+    background-color: var(--num-add);
+}
+
+.options .schemes .num-switch {
+    --mask-size: 75%;
+    --mask-image: url(assets/switch.svg);
+    background-color: var(--num-switch);
+}
+
+.options .schemes .name {
+    --mask-size: 75%;
+    --mask-image: url(assets/text.svg);
+    background-color: var(--num-name);
+}
+
+.options .schemes .header {
+    --mask-size: 75%;
+    --mask-image: url(assets/text.svg);
+    background-color: var(--header-text);
+}
+
+
+
+/**/
+
+
+
+.calc {
+    width: 100%;
+}
+
+.calc:not(:first-of-type) {
+    margin-top: 1rem;
+}
+
+.calc .title {
+    height: 3rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calc .title .name span {
+    font-size: 0.75rem;
+    color: var(--title-text);
+}
+
+.calc .title .name span:first-of-type {
+    font-size: 1rem;
+    color: var(--title-name);
+}
+
+.calc .title .setting {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc .title .setting button {
+    width: 100%;
+
+    font-size: 0.5rem;
+    color: var(--inactive-option);
+}
+
+.calc .title .setting button.active {
+    color: var(--active-option);
+}
+
+.calc .title .setting button.switch {
+    height: 1rem;
+
+    background-color: var(--setting-switch);
+    --mask-image: url(assets/switch.svg);
+    --mask-position: center;
+    --mask-size: auto 50%;
+}
+
+
+
+/**/
+
+
+
+.calc :is(.num, .num + .divide) {
+    margin-top: 1rem;
+}
+
+.calc .divide {
+    height: 2px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    background-color: var(--divide-border);
+}
+
+.calc .divide span, .calc > span {
+    padding: 0 0.25rem;
+    margin-left: 1rem;
+
+    font-size: 0.5rem;
+    color: var(--divide-text);
+    background-color: var(--back);
+}
+
+.calc > span {
+    height: 0.125rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.calc .tip {
+    height: 0;
+    float: right;
+}
+
+.calc .tip span {
+    margin-right: 1.25rem;
+    display: block;
+
+    font-size: 4px;
+    color: var(--line);
+    opacity: 0;
+    transition: opacity 5s;
+}
+
+.calc .tip span.show {
+    opacity: 0.25;
+}
+
+
+
+/**/
+
+
+
+.num {
+    --padding: 0.5rem;
+    --border: 0.125rem;
+    --radius: 0.25rem;
+    --small: 0.75rem;
+}
+
+.num .top {
+    --size: 2rem;
+    --unit: calc(1rem + var(--unit-padding));
+    --unit-padding: calc(var(--padding) / 4);
+}
+
+.num .switch {
+    --size: calc(var(--padding) * 2 + var(--border));
+}
+
+.num .bot {
+    --size: 1rem;
+}
+
+
+
+/**/
+
+
+
+.num {
+    position: relative;
+    user-select: none;
+}
+
+.num .top {
+    height: var(--size);
+    width: calc(100% - var(--padding) * 2);
+    margin: 0 auto;
+    position: relative;
+}
+
+.num .top .border {
+    width: 100%;
+    height: 100%;
+
+    border: var(--border) solid var(--num-border);
+    border-top-right-radius: var(--radius);
+    border-top-left-radius: var(--radius);
+    border-bottom: none;
+}
+
+.num .switch {
+    position: absolute;
+    top: calc(var(--size) / -2);
+    right: 0;
+
+    background-color: var(--back);
+}
+
+.num .switch button {
+    width: var(--size);
+    height: var(--size);
+    display: block;
+
+    background-color: var(--num-switch);
+    --mask-image: url(assets/switch.svg);
+    --mask-position: center;
+    --mask-size: var(--small);
+}
+
+.num .top .content {
+    width: calc(100% - var(--border) * 2);
+    height: 100%;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    left: 0;
+}
+
+
+
+/**/
+
+
+
+.num .top :is(.content, .units, .unit) {
+    display: flex;
+}
+
+.num .top .units {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.num .top select {
+    max-width: 100%;
+    min-width: var(--size);
+    padding-right: var(--padding);
+    position: absolute;
+    right: 0;
+
+    color: transparent;
+    background-color: var(--num-select);
+    --mask-image: url(assets/down.svg);
+    --mask-position: calc(100% - var(--padding)) calc(100% - var(--padding));
+    --mask-size: auto 75%;
+}
+
+.num .top select option {
+    color: var(--front);
+    background-color: var(--back);
+}
+
+.num .top :is(input[type=text], select) {
+    height: calc(var(--size) + var(--padding));
+    margin-top: var(--border);
+}
+
+.num .top input[type=text] {
+    width: 100%;
+    padding-right: var(--unit);
+
+    color: var(--num-text);
+    z-index: 1;
+}
+
+.num .top :is(input[type=text], .unit) {
+    padding-left: var(--padding);
+}
+
+.num .top :is(input[type=text], .unit):last-of-type {
+    margin-right: var(--size);
+}
+
+.num .top .unit {
+    width: 0;
+    height: 1rem;
+    flex-grow: 1;
+}
+
+.num .top .unit div {
+    height: 100%;
+    min-width: calc(100% - var(--unit));
+
+    overflow: hidden;
+    white-space: nowrap;
+    color: transparent;
+    transition: min-width var(--transition);
+}
+
+.num .top .unit span {
+    height: 100%;
+    width: var(--unit);
+    padding-left: var(--unit-padding);
+    flex-shrink: 0;
+
+    font-weight: initial;
+    font-size: var(--small);
+    user-select: initial;
+    color: var(--num-unit);
+}
+
+.num .top input[type=text]:is(:focus-visible, :not(:placeholder-shown)) ~ .units div {
+    min-width: 0;
+}
+
+
+
+/**/
+
+
+
+.num .top .header {
+    width: 100%;
+    height: var(--border);
+    padding-left: var(--padding);
+    position: absolute;
+    display: flex;
+}
+
+.num .top .header span {
+    height: calc(var(--size) + var(--padding) + var(--border) * 2);
+    max-width: calc(100% - var(--size));
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    user-select: initial;
+    word-break: break-word;
+    color: var(--num-name);
+    filter: var(--muted);
+    transition: var(--transition);
+    transition-property: height, padding, font-size, background-color, filter;
+}
+
+.num .top input[type=text]:is(:focus-visible, :not(:placeholder-shown)) ~ .header span {
+    height: 100%;
+    padding: 0 calc(var(--padding) / 2);
+
+    font-size: var(--small);
+    background-color: var(--back);
+    filter: none;
+}
+
+.num .top .header .line {
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(to right, var(--num-name), transparent);
+    transition: opacity var(--transition);
+    opacity: 0;
+}
+
+.num .top input[type=text]:is(:focus-visible, :not(:placeholder-shown)) ~ .header .line {
+    opacity: 1;
+}
+
+
+
+/**/
+
+
+
+.num .bot {
+    width: 100%;
+    padding-top: calc(var(--padding) / 2);
+
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.num .bot button {
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+    --mask-size: contain;
+}
+
+.num .bot button.sub {
+    background-color: var(--num-sub);
+    --mask-image: url(assets/sub.svg);
+    --mask-position: right center;
+}
+
+.num .bot button.add {
+    background-color: var(--num-add);
+    --mask-image: url(assets/add.svg);
+    --mask-position: left center;
+}
+
+.num .bot .range {
+    --pad: calc(var(--size) / 2 - var(--border));
+    --pos: 0%;
+
+    width: 100%;
+    height: calc(var(--border) * 2);
+    margin: 0 calc(var(--padding) / 2);
+    padding: 0 var(--pad);
+
+    border-radius: var(--radius);
+    background: linear-gradient(to right, var(--range-start) 0%, var(--range-pos) var(--pos), var(--range-end) var(--pos));
+}
+
+.num .bot .range input[type=range] {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+}
+
+@supports not (-moz-appearance: none) {
+    .num .bot .range input[type=range] {
+        -webkit-appearance: none;
+    }
+
+    .num .bot .range input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+
+        width: calc(var(--border) * 2);
+        height: calc(var(--border) * 2);
+
+        background-color: var(--range-pos);
+        box-shadow: 0 0 0 var(--pad) var(--range-pos);
+        border-radius: 50%;
+    }
+}
+
+@supports (-moz-appearance: none) {
+    .num .bot .range input[type=range]::-moz-range-thumb {
+        width: calc(var(--border) * 2);
+        height: calc(var(--border) * 2);
+
+        background-color: var(--range-pos);
+        box-shadow: 0 0 0 var(--pad) var(--range-pos);
+        border-radius: 50%;
+        border: none;
+    }
+}
+
+@media (hover: hover) {
+    .num .bot .range {
+        padding: 0;
+    }
+
+    @supports not (-moz-appearance: none) {
+        .num .bot .range input[type=range]::-webkit-slider-thumb {
+            width: var(--size);
+            height: var(--size);
+            box-shadow: none;
+        }
+    }
+
+    @supports (-moz-appearance: none) {
+        .num .bot .range input[type=range]::-moz-range-thumb {
+            width: var(--size);
+            height: var(--size);
+            box-shadow: none;
+        }
+    }
+}
+
+
+
+/**/
+
+
+
+@media (hover: hover) {
+    :is(button, select) {
+        cursor: pointer;
+    }
+
+    :is(button, select):is(:hover, :focus-visible) {
+        filter: var(--hover);
+    }
+
+    @supports not (-moz-appearance: none) {
+        input[type=range]::-webkit-slider-thumb {
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover, input[type=range]:focus-visible::-webkit-slider-thumb {
+            filter: var(--hover);
+        }
+
+        input[type=range]:active::-webkit-slider-thumb {
+            filter: var(--hover);
+            transform: scale(var(--scale));
+        }
+    }
+
+    @supports (-moz-appearance: none) {
+        input[type=range]::-moz-range-thumb {
+            cursor: pointer;
+        }
+
+        input[type=range]::-moz-range-thumb:hover, input[type=range]:focus-visible::-moz-range-thumb {
+            filter: var(--hover);
+        }
+
+        input[type=range]:active::-moz-range-thumb {
+            filter: var(--hover);
+            transform: scale(var(--scale));
+        }
+    }
+}
+
+button:active {
+    filter: var(--hover);
+    transform: scale(var(--scale));
+}
+
+select:active:active {
+    filter: var(--hover);
+    --mask-position: calc(100% - var(--padding)) calc(100% - var(--padding) + 100% * (1 - var(--scale)));
+}
+
+
+
+/**/
+
+
+
+:is(button, select) {
+    --mask-repeat: no-repeat;
+    -webkit-mask-image: var(--mask-image);
+    -webkit-mask-repeat: var(--mask-repeat);
+    -webkit-mask-position: var(--mask-position);
+    -webkit-mask-size: var(--mask-size);
+    mask-image: var(--mask-image);
+    mask-repeat: var(--mask-repeat);
+    mask-position: var(--mask-position);
+    mask-size: var(--mask-size);
+}
