@@ -104,14 +104,14 @@ const init = () => {
 
     Num.nums.forEach((num, i) => {
         let last = i === Num.nums.length - 1;
-        cnf(null, '', 15, null, v => {
+        cnf(null, '', 20, null, v => {
             if (!last || !Num.nums.every(i => i.value)) {
-                num.set(v / 100);
+                num.set(v / 1000);
                 num.emit('input');
             }
         }, () => {
             let full = Num.nums.every(i => i.value);
-            return full && last ? 0 : Math.round(num.value * 100);
+            return full && last ? 0 : Math.round(num.value * 1000);
         });
     });
 
