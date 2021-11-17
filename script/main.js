@@ -94,8 +94,8 @@ const init = () => {
     MENUS.forEach((menu, i) => {
         let gradient = 'linear-gradient(to right';
         for (let v = 0; v <= 360; v += 60) gradient += ', ' + hsl(v);
-        SLIDERS[i].min = 0, SLIDERS[i].max = 360, SLIDERS[i].style.background = gradient + ')';
-        const set = v => (document.documentElement.style.setProperty(colors[i], hsl(SLIDERS[i].value = v)), data.changed());
+        SLIDERS[i].min = 0, SLIDERS[i].max = 360 - 1, SLIDERS[i].style.background = gradient + ')';
+        const set = v => (document.documentElement.style.setProperty(colors[i], hsl(SLIDERS[i].value = v % 360)), data.changed());
         menu.querySelector('.random').addEventListener('click', () => set(Math.floor(Math.random() * 360)));
         cnf(SLIDERS[i], '', 9, on => on('input', v => v), set, () => parseInt(SLIDERS[i].value));
     });
